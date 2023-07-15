@@ -26,6 +26,8 @@ def get_version_core(echo_msg):
     echo_msg['emulator_core.py'] = '2023-06-08 12:35'
     return echo_msg
 
+def convert_bg(bg):
+    return round(bg/18,1)
 
 def hole(sLine, Ab, Auf, Zu):
     #E extrahiere Substring ab der Stelle "ab"
@@ -1057,7 +1059,7 @@ def scanLogfile(fn, entries):
                 break
             except PermissionError:
                 asleep = 10
-                log_msg('\nYour CSV-file seems blocked by other process. Checking again in '+str(asleep)+' sec.'+chr(7)) # sometimes I can hear that BELL
+                log_msg(f'\nYour CSV-file {fn_first}.{varLabel}.csv seems blocked by other process. Checking again in '+str(asleep)+' sec.'+chr(7)) # sometimes I can hear that BELL
                 time.sleep(asleep)
                 pdfCleared=True
             except FileNotFoundError:
@@ -2155,9 +2157,9 @@ def parameters_known(myseek, arg2, variantFile, startLabel, stoppLabel, entries,
             if thisTime not in entries:                 # holds the rows to be printed on Android or windows
                 r_list = loop_label[iFrame][:5]+'Z'
                 if featured('bg'):      
-                    r_list += f'{bg[getBgTimeIndex(iFrame)]:>6}'
+                    r_list += f'{convert_bg(bg[getBgTimeIndex(iFrame)]):>6}'
                 if featured('target'):
-                    r_list += f'{round((origTarLow[iFrame] + origTarHig[iFrame])/2,0):>8}'.replace(".0","")
+                    r_list += f'{convert_bg(round((origTarLow[iFrame] + origTarHig[iFrame])/2,0)):>8}'.replace(".00",".0")
                 if featured('iob'):     
                     r_list += f'{round(origiob[iFrame]/10,2):>6}'   # was scaled up for plotting
                 if featured('cob'):     
@@ -2168,7 +2170,7 @@ def parameters_known(myseek, arg2, variantFile, startLabel, stoppLabel, entries,
                 #    #_list += f'{round(origAI_ratio[iFrame]/10,2):>6} {round(emulAI_ratio[iFrame]/10,2):>4}'     # was scaled up for plotting
                 #    r_list += f'{round(emulAI_ratio[iFrame]/10,2):>4}'     # was scaled up for plotting
                 if featured('range'):
-                    r_list += f'{longDelta[iFrame]:>6}{avgDelta[iFrame]:>7}'
+                    r_list += f'{convert_bg(longDelta[iFrame]):>6}{convert_bg(avgDelta[iFrame]):>7}'
                 if featured('fitsslope') or featured('bestslope'):
                     r_list += f'{longSlope[iFrame]:>7}{rateSlope[iFrame]:>6}'
                 if featured('fitsParabola') or featured('bestParabola'):
@@ -2189,7 +2191,7 @@ def parameters_known(myseek, arg2, variantFile, startLabel, stoppLabel, entries,
                 if featured('ISF') or featured('ISF-factors'): 
                     r_list += f'{round(emulAs_ratio[iFrame]/10,2):>7}{round(acceISF[iFrame],2):>6}{round(BZ_ISF[iFrame],2):>6}{round(pp_ISF[iFrame],2):>6}{round(Delta_ISF[iFrame],2):>6}{round(dura_ISF[iFrame],2):>6}'
                 if featured('ISF') or featured('ISFs'):         # 21
-                    r_list += f'{round(origISF[iFrame],1):>9}{round(profISF[iFrame],1):>6}{round(emulISF[iFrame],1):>6}'
+                    r_list += f'{round(convert_bg(origISF[iFrame]),1):>9}{round(convert_bg(profISF[iFrame]),1):>6}{round(convert_bg(emulISF[iFrame]),1):>6}'
                 if featured('insReq'):
                     r_list += f'{origInsReq[iFrame]:>7}{emulInsReq[iFrame]:>6}'
                 if featured('SMB'):
